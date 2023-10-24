@@ -340,3 +340,8 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,flutter,dart,python,jupyternotebooks,macos
+Python/Data/Model/rdl_1st_filter/weights.txt
+Python/Data/RDL/852b62d2b54934122ef77d914cea5c2d.jpg
+Python/Data/RDL/night-scene.jpg
+Python/Data/RDL/night_scene_filtered_색온도감소_85.png
+Python/Data/RDL/old-town.jpg

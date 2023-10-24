@@ -3,6 +3,8 @@
 
 # Except Files
 *.bat
+*.h5
+
 
 
 ### Dart ###

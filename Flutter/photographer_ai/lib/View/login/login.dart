@@ -28,12 +28,12 @@ class _LoginViewState extends State<LoginView> {
     login = true;
     useridController = TextEditingController();
     passwordController = TextEditingController();
-    // _initSharedpreferences();
+    _initSharedpreferences();
   }
 
   @override
   void dispose() {
-    // _disposeSharedpreferences();
+    _disposeSharedpreferences();
     super.dispose();
   }
 
@@ -64,6 +64,7 @@ class _LoginViewState extends State<LoginView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
+        centerTitle: true,
       ),
       body: Form(
         child: Center(
@@ -94,7 +95,7 @@ class _LoginViewState extends State<LoginView> {
 
                   print("result = $result");
                   if (result == 'fail') {
-                    Get.snackbar('로그인', '실패했찌롱~~~');
+                    Get.snackbar('로그인', '실패');
                   } else {
                     _disposeSharedpreferences();
                     _saveSharedpreferences();

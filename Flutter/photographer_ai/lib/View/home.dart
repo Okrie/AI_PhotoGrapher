@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:photographer_ai/View/camera.dart';
 import 'package:photographer_ai/View/filter.dart';
 import 'package:photographer_ai/View/login/login.dart';
@@ -23,9 +24,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
     _tabController.index = index != 0 ? index[0] : 0;
     login = false;
+    _initSharedpreferences();
   }
 
   @override
@@ -132,5 +134,20 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
         ],
       ),
     );
+  }
+
+  Future<void> _initSharedpreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    // userid = prefs.getString('userid') ?? "";
+    // password = prefs.getString('password') ?? "";
+    // login = userid.trim().isEmpty;
+    setState(() {
+      
+    });
+  }
+  
+  Future<void> _disposeSharedpreferences() async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear(); 
   }
 }

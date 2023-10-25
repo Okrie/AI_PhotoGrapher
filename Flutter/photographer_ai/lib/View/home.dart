@@ -25,7 +25,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
-    _tabController.index = index != 0 ? index[0] : 0;
+    _tabController.index = index;
     login = false;
     _initSharedpreferences();
   }

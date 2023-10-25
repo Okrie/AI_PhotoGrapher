@@ -13,7 +13,6 @@ class _MainViewState extends State<MainView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     recommendedList = [];
     addFun();
@@ -42,8 +41,8 @@ class _MainViewState extends State<MainView> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
+            const Padding(
+              padding: EdgeInsets.only(top: 20),
               child: Text('PhotoGraphers'),
             ),
             Padding(

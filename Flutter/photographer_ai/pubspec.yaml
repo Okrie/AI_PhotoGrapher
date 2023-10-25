@@ -1,5 +1,5 @@
 name: photographer_ai
-description: A new Flutter project.
+description: AI PhotoGrapher Filter made by Okrie.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -44,6 +44,22 @@ dependencies:
   shared_preferences: ^2.2.2
   image_picker: ^1.0.4
   flutter_native_splash: ^2.3.4
+
+flutter_native_splash:
+  color: "#525353"
+  image: assets/ai_pg.png
+  branding: assets/ai_pg.png
+  color_dark: "#525353"
+  image_dark: assets/ai_pg.png
+  branding_dark: assets/ai_pg.png
+
+  android_12:
+    image: assets/ai_pg.png
+    icon_background_color: "#525353"
+    image_dark: assets/ai_pg.png
+    icon_background_color_dark: "#525353"
+
+  web: false
 
 dev_dependencies:
   flutter_test:

@@ -2,20 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:photographer_ai/View/home.dart';
+import 'package:photographer_ai/ViewModel/Camera/camera_vm.dart';
 
 Future<void> main() async{
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Obtain a list of the available cameras on the device.
-  final cameras = await availableCameras();
+  final cameraController = Get.put(CameraViewController());
 
-  // Get a specific camera from the list of available cameras.
-  final firstCamera = cameras.first;
+  await initialization(null, cameraController);
 
   runApp(const MyApp());
 }
+
+Future initialization(BuildContext? context, CameraViewController cameraController) async{
+  /// Load Resources
+  await Future.delayed(const Duration(seconds: 2));
+
+  // Ensure that the camera is initialized.
+  await cameraController.initializeCamera();
+}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

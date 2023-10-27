@@ -1,11 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
 from typing import Union
-import os
+import os, sys
 import pymysql
-from .static.pred import pred
-
+import zipfile
+# sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+from pred.predImages import PredImages
 
 app = FastAPI()
 templates = Jinja2Templates(directory="templates")
@@ -16,10 +17,12 @@ def read_root(request: Request):
 
 
 @app.get('/pred')
-def pred_image(request: Request):
-
-    return pred()
+async def pred_image(request: Request):
+    pi = PredImages()
+    result = pi.pred()
     
+    return {'result' : result}, 200
+
 
 # import subprocess
 

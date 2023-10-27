@@ -10,12 +10,12 @@ class PredImages:
         PredImages Class
     '''
 
-    def pred(self):
+    def pred(self, image_name):
         print(os.path.realpath('.'))
 
         pred_model = PredPicture(model_path=f'{os.path.realpath(".")}/pred/model/model_1.h5', width=128, height=128, image_path=f'{os.path.realpath(".")}/pred/images/image_1.jpg')
 
-        original_img = np.array(Image.open(f'{os.path.realpath(".")}/pred/predict_test/old-town.jpg'), dtype=np.uint8)
+        original_img = np.array(Image.open(f'{os.path.realpath(".")}/pred/pred_image/{image_name}.jpg'), dtype=np.uint8)
 
         predicted_img = pred_model.show_generated_images(get_count=3)
 
@@ -30,7 +30,6 @@ class PredImages:
         print(original_color[0] / target_color[0], original_color[1] / target_color[1], original_color[2] / target_color[2])
 
         print("Filltered_IMG")
-        print(f'{os.path.realpath(".")}\results')
         for i in range(len(transformed_image)):
             image = Image.fromarray(transformed_image[i])
             image.save(f'{os.path.realpath(".")}\\pred\\results\\img{i}.jpg')

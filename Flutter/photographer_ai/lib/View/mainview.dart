@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
@@ -9,12 +11,14 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
 
-  late List<int> recommendedList;
+  late List<String> recommendedList;
+  late List<String> recommendedAuthor;
 
   @override
   void initState() {
     super.initState();
     recommendedList = [];
+    recommendedAuthor = [];
     addFun();
   }
 
@@ -35,9 +39,10 @@ class _MainViewState extends State<MainView> {
                 height: 200,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.black,
-                child: Image.network(
-                  'https://img.lovepik.com/free-png/20210919/lovepik-vector-material-of-black-vip-banner-design-png-image_400382402_wh1200.png',
+                child: Image.asset(
+                  'images/banner.png',
                   width: MediaQuery.of(context).size.width*0.6,
+                  fit: BoxFit.fitWidth,
                 ),
               ),
             ),
@@ -56,17 +61,20 @@ class _MainViewState extends State<MainView> {
                     return Card(
                       child: Row(
                         children: [
-                          Image.network(
-                            'https://thumb.silhouette-ac.com/t/09/098cf87b0e781687780c8fbb9c7a5872_t.jpeg',
-                            //'${recommendedList[index].toString()}',
+                          Image.asset(
+                            recommendedList[index],
+                            width: 250,
                             height: 100,
-                            width: 300,
+                            fit: BoxFit.fitWidth,
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 30)
                           ),
                           SizedBox(
                             height: 100,
-                            width: 50,
+                            width: 100,
                             child: Center(
-                              child: Text('${recommendedList[index].toString()} 작가'),
+                              child: Text('${recommendedAuthor[index].toString()} 작가'),
                             ),
                           ),
                         ],
@@ -83,9 +91,12 @@ class _MainViewState extends State<MainView> {
   }
 
   addFun(){
-    recommendedList.add(1);
-    recommendedList.add(2);
-    recommendedList.add(3);
+    recommendedList.add('images/author1.png');
+    recommendedAuthor.add('Lucia');
+    recommendedList.add('images/author2.png');
+    recommendedAuthor.add('Rain');
+    recommendedList.add('images/author3.png');
+    recommendedAuthor.add('Edward');
   }
 }
 

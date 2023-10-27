@@ -28,23 +28,15 @@ class _CameraViewState extends State<CameraView>{
           // Take the Picture in a try / catch block. If anything goes wrong,
           // catch the error.
           try {
-            // // Ensure that the camera is initialized.
-            // await cameraController.initializeCamera();
-            print('여기1');
             // Attempt to take a picture and then get the location
             // where the image file is saved.
             final image = await cameraController.controller.takePicture();
 
-            // print('여기2');
-
             _filController.image.value = image.path;
-            print(_filController.image.value.runtimeType);
-
-            print('여기3');
 
             if (!mounted) return;
-            
-            print('여기4');
+
+            _filController.imgUpLoad.value = true;
             // If the picture was taken, display it on a new screen.
             await Get.offAll(() => const Home(), arguments: 2);
 
@@ -65,19 +57,6 @@ class _CameraViewState extends State<CameraView>{
         (cameraController.controller.value.isInitialized)
               ? CameraPreview(cameraController.controller)
               : const Center(child:CircularProgressIndicator()),
-        
-        // FutureBuilder<void>(
-        //   future: cameraController.initializeCamera(),
-        //   builder: (context, snapshot) {
-        //     if (snapshot.connectionState == ConnectionState.done) {
-        //       // If the Future is complete, display the preview.
-        //       return CameraPreview(cameraController.controller);
-        //     } else {
-        //       // Otherwise, display a loading indicator.
-        //       return const Center(child: CircularProgressIndicator());
-        //     }
-        //   },
-        // ),
       ),
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class MainView extends StatefulWidget {
@@ -55,7 +53,6 @@ class _MainViewState extends State<MainView> {
               child: SizedBox(
                 height: MediaQuery.of(context).size.height*0.5,
                 child: ListView.builder(
-                  // count = 보여줄것
                   itemCount: recommendedList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Card(

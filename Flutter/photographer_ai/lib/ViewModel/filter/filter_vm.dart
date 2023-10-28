@@ -29,7 +29,7 @@ class FilterController extends GetxController{
   // 선택, 올린 스크린샷 기준으로 이미지 업로드
   Future<void> uploadImage() async {
     // 서버의 엔드포인트 URL
-    var uri = Uri.parse('http://121.130.179.94:8000/pred');
+    var uri = Uri.parse('http://flask.okrie.kro.kr:8000/pred');
 
     // MultipartRequest
     var request = http.MultipartRequest('POST', uri);
@@ -62,7 +62,7 @@ class FilterController extends GetxController{
   Future<List<String>> fetchImages() async {
     if (!imgUpLoad.value){
 
-      final response = await http.get(Uri.parse('http://121.130.179.94:8000/pred'));
+      final response = await http.get(Uri.parse('http://flask.okrie.kro.kr:8000/pred'));
 
       if (response.statusCode == 200) {
         List<dynamic> list = jsonDecode(response.body);
@@ -90,7 +90,7 @@ class FilterController extends GetxController{
 
   // 이미지 업로드 후 이미지 데이터 가져오기
   Future<List<String>> uploadImageAndFetchData() async {
-    var uri = Uri.parse('http://121.130.179.94:8000/pred'); // 이미지 업로드 및 데이터 가져올 URL
+    var uri = Uri.parse('http://flask.okrie.kro.kr:8000/pred'); // 이미지 업로드 및 데이터 가져올 URL
 
     var request = http.MultipartRequest('POST', uri);
 

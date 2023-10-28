@@ -33,12 +33,6 @@ class PredImages:
         for i in range(len(transformed_image)):
             image = Image.fromarray(transformed_image[i])
             image.save(f'{os.path.realpath(".")}\\pred\\results\\img{i}.jpg')
-        # image_json = {}
-        # image_json[f'image0'] = json.dumps({'image': transformed_image[0].tolist()})
-        # # 데이터를 JSON 형식으로 변환
-        # data_json = json.dumps([arr.tolist() for arr in transformed_image[0]])
-        
-        # data_json = self.image_to_json(transformed_image[0])
 
         data_jsons = [self.image_to_json(image) for image in transformed_image]  # 각 이미지를 JSON으로 변환합니다.
 

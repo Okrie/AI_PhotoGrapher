@@ -91,13 +91,15 @@ def use_filter(userid: str, pseq: int, db: Session = Depends(database.get_db)):
         return {'result' : 'Success'}, 200
 
 # 유저 구매 목록
-@app.post('/userinfo', status_code=201)
+@app.get('/userinfo', status_code=201)
 def purchase_info(userid: str, db: Session = Depends(database.get_db)):
     # ID Check
     existing_user = db.query(PurchaseDB).filter(PurchaseDB.userid == userid).all()
     if not existing_user:
         return {'result' : 'Fail'}, 403
-    return {'result' : existing_user}, 200
+    result = [data.as_dict() for data in existing_user]
+    print(result)
+    return {'result' : result}, 200
 
 # AI 예측
 @app.post('/pred')
@@ -113,8 +115,3 @@ async def pred_image(image: UploadFile = File(...)):
     return {'result' : result}, 200
 
 
-
-# import subprocess
-
-# result = subprocess.run(["python", "--version"], stdout=subprocess.PIPE, text=True)
-# print(result.stdout)

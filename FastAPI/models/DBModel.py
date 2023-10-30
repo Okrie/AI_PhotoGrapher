@@ -41,6 +41,10 @@ class PurchaseDB(Base):
     paid = Column(Integer())
     expired = Column(Integer())
 
+    def as_dict(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
 class Purchase(BaseModel):
     seq: int
     userid: str

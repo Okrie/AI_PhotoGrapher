@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/ViewModel/Main/author_vm.dart';
-import 'package:photographer_ai/ViewModel/filter/filter_vm.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -28,7 +27,7 @@ class MainView extends StatelessWidget {
                 height: 200,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.black,
-                child: Obx(() => authorcontroller.pload.value 
+                child: Obx(() => authorcontroller.pload.value
                   ? Image.network(
                     authorcontroller.data[Random().nextInt(authorcontroller.data.length)]['pimage'],
                     width: MediaQuery.of(context).size.width*0.6,

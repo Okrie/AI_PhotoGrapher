@@ -70,44 +70,55 @@ class _LoginFormState extends State<LoginForm> {
                 obscureText: true,
               ),
             ),
-            ElevatedButton(
-              // 로그인
-              onPressed: () async {
-                print('id=${useridController.text}&password=${passwordController.text}');
-                var url = Uri.parse('http://flask.okrie.kro.kr:8000/auth/user');
-                var headers = { 'Content-Type': 'application/json', 'accept': 'application/json',};
-                var body = jsonEncode({'id': useridController.text, 'password': passwordController.text});
-                var response = await http.post(
-                  url,
-                  headers: headers,
-                  body: body
-                );
-                print(response.body);
-                print(response.statusCode);
-                if (response.statusCode == 201){
-                  var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-                  String result = dataConvertedJSON[0]['result'];
-                  print("result = $result");
-                  if (result == 'Success') {
-                    usercontroller.isLogin.value = true;
-                    usercontroller.userid.value = useridController.text;
-                    _disposeSharedpreferences();
-                    _saveSharedpreferences();
-                    Get.offAll(const Home(), arguments: 0);
-                  } else {
-                    Get.snackbar('로그인', '실패');
-                  }
-                }
-              },
-              child: const Text('login'),
-            ),
-            ElevatedButton(
-              // 회원가입
-              onPressed: () {
-                Get.to(const RegisterView());
-              },
-              child: const Text('회원가입'),
-            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  // 회원가입
+                  onPressed: () {
+                    Get.to(const RegisterView());
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(150, 40),
+                    backgroundColor: Colors.orange[100],
+                    foregroundColor: Colors.black87,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    )
+                  ),
+                  child: const Text('회원가입'),
+                ),
+                const SizedBox(
+                  height: 100,
+                  width: 50,
+                ),
+                ElevatedButton(
+                  // 로그인
+                  onPressed: () async {
+                  var result = await usercontroller.userLogin(useridController.text, passwordController.text);
+                    if (result) {
+                      usercontroller.isLogin.value = true;
+                      usercontroller.userid.value = useridController.text;
+                      _disposeSharedpreferences();
+                      _saveSharedpreferences();
+                      Get.snackbar('Login', '${usercontroller.userid.value}님, 어서오세요');
+                      Get.offAll(const Home(), arguments: 0);
+                    } else {
+                      Get.snackbar('로그인', '실패');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(150, 40),
+                    backgroundColor: Colors.orange[100],
+                    foregroundColor: Colors.black87,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)
+                    )
+                  ),
+                  child: const Text('login'),
+                ),
+              ],
+            ),            
             // //카카오톡 로그인 버튼
             // //유저 상황에 따른 조건식 진행
             // ElevatedButton(
@@ -158,23 +169,19 @@ class _LoginFormState extends State<LoginForm> {
   Future<void> _initSharedpreferences() async {
     final prefs = await SharedPreferences.getInstance();
     useridController.text = prefs.getString('userid') ?? "";
-    passwordController.text = prefs.getString('password') ?? "";
 
-    //앱을 종료하고 다시 실행하면 SharedPreferences에 남아 있으므로 앱을 종료시 정리해야한다.
+    //앱을 종료하고 다시 실행하면 SharedPreferences에 남아 있으므로 앱을 종료시 정리
     print(useridController);
-    print(passwordController);
   }
 
   _saveSharedpreferences() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('userid', useridController.text);
-    print("shared saved!");
     setState(() {});
   }
 
   _disposeSharedpreferences() async {
     final prefs = await SharedPreferences.getInstance();
-
     prefs.clear();
   }
 }

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:photographer_ai/ViewModel/filter/filter_vm.dart';
+import 'package:photographer_ai/ViewModel/Filter/filter_vm.dart';
 
 class PhotoGrapherFilter extends StatelessWidget{
   const PhotoGrapherFilter({super.key});
@@ -62,7 +62,6 @@ class PhotoGrapherFilter extends StatelessWidget{
                 child: FutureBuilder<List<String>>(
                   future: fcontroller.uploadImageAndFetchData(),
                   builder: (BuildContext context, AsyncSnapshot<List<String>> snapshot) {
-                    print(fcontroller.imgUpLoad.value);
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const CircularProgressIndicator(); // 로딩 중일 때는 로딩 인디케이터 표시
                     } else if (snapshot.hasError) {

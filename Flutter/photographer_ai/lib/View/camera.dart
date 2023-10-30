@@ -3,7 +3,7 @@ import 'package:camera/camera.dart';
 import 'package:get/get.dart';
 import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/ViewModel/Camera/camera_vm.dart';
-import 'package:photographer_ai/ViewModel/filter/filter_vm.dart';
+import 'package:photographer_ai/ViewModel/Filter/filter_vm.dart';
 
 class CameraView extends StatefulWidget {
   const CameraView({super.key});

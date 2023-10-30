@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,6 +12,7 @@ class FilterController extends GetxController{
   RxString image = ''.obs;
   RxBool isLoaded = false.obs;
   RxBool imgUpLoad = false.obs;
+  RxInt seq = 99.obs;
   // RxList<AiImage> aiImageList = <AiImage>[].obs;
   
 
@@ -127,5 +129,28 @@ class FilterController extends GetxController{
       print('Image upload failed.');
       throw Exception('Failed to upload image');
     }
+  }
+
+  // 필터 사용
+  Future<String> useFilter(userid) async {
+    var url = Uri.parse('http://flask.okrie.kro.kr:8000/userfilter');
+    var headers = { 'Content-Type': 'application/json', 'accept': 'application/json',};
+    var body = jsonEncode({'userid': userid, 'seq': seq.value});
+    var response = await http.post(
+      url,
+      headers: headers,
+      body: body
+    );
+
+    if (response.statusCode == 201){
+      var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+      String result = dataConvertedJSON[0]['result'];
+      print("result = $result");
+      if (result == 'Success') {
+        return result;
+      }
+    }
+
+    return 'Fail';
   }
 }

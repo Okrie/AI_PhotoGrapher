@@ -1,62 +1,105 @@
-from fastapi import FastAPI, Response, UploadFile, File, Depends
+"""
+    app.py
+"""
+
+from fastapi import FastAPI, UploadFile, File, Depends
 from fastapi import Request
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pred.predImages import PredImages
 from sqlalchemy.orm import Session
-from .models.DBModel import User, Photographer, Purchase
-from .config.DBConfig import DBConfig
-from pydantic import BaseModel
+from models.DBModel import *
+from config.DBConfig import DBConfig
 import os
 
 app = FastAPI()
 database = DBConfig()
 templates = Jinja2Templates(directory="templates")
 
-@app.get('/')
+# 메인
+@app.post('/', status_code=201)
 def read_root(request: Request):
     return templates.TemplateResponse('index.html', {'request' : request})
 
-@app.get('/getusers')
-def get_users(db: Session = Depends(database.get_db)):
-    users = db.query(User).all()
-    return users
+# 이미지 연결
+app.mount("/images", StaticFiles(directory="static/author"), name="images")
 
-@app.get('/auth/user')
-def loginuser(user: User, db: Session = Depends(database.get_db)):
+# 작가 정보
+@app.get('/getauthors')
+def get_authors(db: Session = Depends(database.get_db)):
+    authors = db.query(PhotographerDB).all()
+    return authors
+
+# 유저 로그인
+@app.post('/auth/user', status_code=201)
+def login_user(user: User, db: Session = Depends(database.get_db)):
     # 사용자 정보 조회
-    existing_user = db.query(User).filter(User.id == user.id).first()
-
+    existing_user = db.query(UserDB).filter(UserDB.id == user.id).first()
     if (not existing_user) | (existing_user.password != user.password):
-        return {'result' : 'Wrong ID or Paswword'}, 400
+        return {'result' : 'Fail'}, 400
 
-    return {'result' : 'Login Success'}, 200
+    return {'result' : 'Success'}, 200
 
-@app.get('/auth/user/register')
-def registeruser(user: User, db: Session = Depends(database.get_db)):
+# 유저 등록
+@app.post('/auth/user/register', status_code=201)
+def register_user(user: User, db: Session = Depends(database.get_db)):
     # ID 중복 체크
-    existing_user = db.query(User).filter(User.id == user.id).first()
+    existing_user = db.query(UserDB).filter(UserDB.id == user.id).first()
     if existing_user:
         return {'result' : 'ID Duplicated'}, 403
-
-    db.add(user)
+    new_user = UserDB(**user.model_dump())  # SQLAlchemy 모델 생성
+    db.add(new_user)
     db.commit()
+    return {'result' : 'Success'}, 200
 
-    return {'result' : 'Register Success'}, 200
-
-@app.get('/purchase')
-def purchaseFilter(pur: Purchase, db: Session = Depends(database.get_db)):
+# 유저 구매
+@app.post('/purchase', status_code=201)
+def purchase_filter(userid: str, pseq: int, db: Session = Depends(database.get_db)):
     # ID Check
-    existing_user = db.query(User).filter(User.id == pur.id).first()
+    existing_user = db.query(UserDB).filter(UserDB.id == userid).all()
     if not existing_user:
         return {'result' : 'Not User'}, 403
-
-    db.add(pur)
+    # Author Check
+    existing_author = db.query(PhotographerDB).filter(PhotographerDB.seq == pseq).first()
+    if not existing_author:
+        return {'result' : 'Not Author'}, 403
+    existing_purchase = db.query(PurchaseDB).filter(PhotographerDB.seq == pseq, UserDB.id == userid).first()
+    if existing_purchase:
+        return {'result' : 'Fail'}, 200
+    pur = Purchase(seq=existing_author.seq, userid=userid, paid=existing_author.price, expired=existing_author.count)
+    new_purchase = PurchaseDB(**pur.model_dump())  # SQLAlchemy 모델 생성
+    db.add(new_purchase)
     db.commit()
+    return {'result' : 'Success'}, 200
 
-    return {'result' : 'Purchase Success'}, 200
+# 필터 사용
+@app.post('/usefilter', status_code=201)
+def use_filter(userid: str, pseq: int, db: Session = Depends(database.get_db)):
+    # ID Check
+    existing_user = db.query(UserDB).filter(UserDB.id == userid).all()
+    if not existing_user:
+        return {'result' : 'Not User'}, 403
+    # Purchase Author Check
+    existing_author = db.query(PurchaseDB).filter(PurchaseDB.seq == pseq).first()
+    if not existing_author:
+        return {'result' : 'Not Author'}, 403
+    if existing_author.expired-1 < 0:
+        return {'result' : 'Expired'}, 403
+    else:
+        existing_author.expired = existing_author.expired-1
+        db.commit()
+        return {'result' : 'Success'}, 200
 
+# 유저 구매 목록
+@app.post('/userinfo', status_code=201)
+def purchase_info(userid: str, db: Session = Depends(database.get_db)):
+    # ID Check
+    existing_user = db.query(PurchaseDB).filter(PurchaseDB.userid == userid).all()
+    if not existing_user:
+        return {'result' : 'Fail'}, 403
+    return {'result' : existing_user}, 200
 
+# AI 예측
 @app.post('/pred')
 async def pred_image(image: UploadFile = File(...)):
     # try:

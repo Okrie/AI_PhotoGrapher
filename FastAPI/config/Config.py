@@ -1,6 +1,5 @@
 import sqlalchemy
 
 
-
 db = sqlalchemy
 

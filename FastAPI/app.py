@@ -73,7 +73,7 @@ def purchase_filter(userid: str, pseq: int, db: Session = Depends(database.get_d
     return {'result' : 'Success'}, 200
 
 # 필터 사용
-@app.post('/usefilter', status_code=201)
+@app.get('/usefilter', status_code=201)
 def use_filter(userid: str, pseq: int, db: Session = Depends(database.get_db)):
     # ID Check
     existing_user = db.query(UserDB).filter(UserDB.id == userid).all()
@@ -87,6 +87,7 @@ def use_filter(userid: str, pseq: int, db: Session = Depends(database.get_db)):
         return {'result' : 'Expired'}, 403
     else:
         existing_author.expired = existing_author.expired-1
+        print(existing_author)
         db.commit()
         return {'result' : 'Success'}, 200
 

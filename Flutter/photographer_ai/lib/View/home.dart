@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photographer_ai/ViewModel/User/user_vm.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:photographer_ai/View/camera.dart';
 import 'package:photographer_ai/View/filter.dart';
@@ -17,6 +18,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
 
   // Property
+  late UserController userController;
   late TabController _tabController;
   late bool login;
   var index = Get.arguments ?? 0;
@@ -26,7 +28,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
     super.initState();
     _tabController = TabController(length: 4, vsync: this, initialIndex: 0);
     _tabController.index = index;
-    login = false;
+    try{
+      userController = Get.find();
+    } catch (e){
+      userController = Get.put(UserController());
+    }
+    login = userController.isLogin.value;
     _initSharedpreferences();
   }
 
@@ -35,7 +42,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
     _tabController.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {

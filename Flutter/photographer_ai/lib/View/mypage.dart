@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:photographer_ai/View/user/mypage_detail.dart';
 
 class MyPageView extends StatelessWidget {
   const MyPageView({super.key});
@@ -10,6 +11,7 @@ class MyPageView extends StatelessWidget {
         title: const Text('My Page'),
         centerTitle: true,
       ),
+      body: UserDetail(),
     );
   }
 }

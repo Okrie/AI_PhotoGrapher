@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/ViewModel/Filter/filter_vm.dart';
+import 'package:photographer_ai/ViewModel/User/user_vm.dart';
 
 class PhotoGrapherFilter extends StatelessWidget{
   const PhotoGrapherFilter({super.key});
@@ -13,11 +15,18 @@ class PhotoGrapherFilter extends StatelessWidget{
   Widget build(BuildContext context){
 
     FilterController fcontroller;
+    UserController userController;
 
     try{
       fcontroller = Get.find();
     } catch (e){
       fcontroller = Get.put(FilterController());
+    }
+
+    try{
+      userController = Get.find();
+    }catch (e) {
+      userController = Get.put(UserController());
     }
 
     return Scaffold(
@@ -75,8 +84,50 @@ class PhotoGrapherFilter extends StatelessWidget{
                           String imageBase64 = snapshot.data![index];
                           Uint8List bytes = base64Decode(imageBase64);
                       
-                          return Card(
-                            child: Image.memory(bytes)
+                          return GestureDetector(
+                            onTap: () {
+                              Get.rawSnackbar(
+                                messageText: Column(
+                                  children: [
+                                    const Text('Filter', textAlign: TextAlign.center),
+                                    const Text('사용하시겠습니까?\n사용 가능한 개수가 차감됩니다.'),
+                                    Center(
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {
+                                              if (userController.isLogin.value){
+                                                
+                                                fcontroller.useFilter(userController.userid.value);
+                                                fcontroller.downloadImage(bytes);
+                                              } else{
+                                                Get.snackbar('Error', '로그인이 해주세요.', duration: const Duration(seconds: 1));
+                                                Get.offAll(() => const Home(), arguments: 3);
+                                              }
+                                            },
+                                            child: const Text('Use')
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              //
+                                            },
+                                            child: const Text('Cancel')
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                backgroundColor: const Color.fromARGB(255, 206, 198, 198),
+                                snackPosition: SnackPosition.BOTTOM,
+                                isDismissible: false,
+                                overlayBlur: 0.2,
+                              );
+                            },
+                            child: Card(
+                              child: Image.memory(bytes)
+                            ),
                           ); // base64 인코딩된 이미지 데이터를 이미지로 변환하여 표시
                         },
                       );

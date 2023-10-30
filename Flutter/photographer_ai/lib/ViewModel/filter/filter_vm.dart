@@ -1,6 +1,5 @@
 import 'dart:convert';
-import 'dart:ffi';
-
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +11,7 @@ class FilterController extends GetxController{
   RxString image = ''.obs;
   RxBool isLoaded = false.obs;
   RxBool imgUpLoad = false.obs;
-  RxInt seq = 99.obs;
+  RxInt seq = 1.obs;
   // RxList<AiImage> aiImageList = <AiImage>[].obs;
   
 
@@ -95,14 +94,17 @@ class FilterController extends GetxController{
     var uri = Uri.parse('http://flask.okrie.kro.kr:8000/pred'); // 이미지 업로드 및 데이터 가져올 URL
 
     var request = http.MultipartRequest('POST', uri);
+    try{
+      var multipartFile = await http.MultipartFile.fromPath(
+        'image', // 서버가 요구하는 파라미터명
+        image.value,
+        contentType: MediaType('image', 'jpeg'),
+      );
 
-    var multipartFile = await http.MultipartFile.fromPath(
-      'image', // 서버가 요구하는 파라미터명
-      image.value,
-      contentType: MediaType('image', 'jpeg'),
-    );
-
-    request.files.add(multipartFile);
+      request.files.add(multipartFile);
+    } catch (e) {
+      print(e);
+    }
 
     var response = await request.send();
 
@@ -127,19 +129,19 @@ class FilterController extends GetxController{
       return images;
     } else {
       print('Image upload failed.');
-      throw Exception('Failed to upload image');
+      return [];
     }
   }
 
   // 필터 사용
   Future<String> useFilter(userid) async {
-    var url = Uri.parse('http://flask.okrie.kro.kr:8000/userfilter');
-    var headers = { 'Content-Type': 'application/json', 'accept': 'application/json',};
-    var body = jsonEncode({'userid': userid, 'seq': seq.value});
-    var response = await http.post(
+    var url = Uri.parse('http://flask.okrie.kro.kr:8000/usefilter?userid=${userid}&pseq=${seq.value}');
+    // var headers = {'accept': 'application/json'};
+    // var body = jsonEncode({'userid': userid, 'pseq': seq.value});
+    var response = await http.get(
       url,
-      headers: headers,
-      body: body
+      // headers: headers,
+      // body: body
     );
 
     if (response.statusCode == 201){
@@ -152,5 +154,10 @@ class FilterController extends GetxController{
     }
 
     return 'Fail';
+  }
+
+  Future<void> downloadImage(bytes) async {
+    final result = await ImageGallerySaver.saveImage(bytes);
+    Get.snackbar('Success', '사진을 다운로드 하였습니다.');
   }
 }

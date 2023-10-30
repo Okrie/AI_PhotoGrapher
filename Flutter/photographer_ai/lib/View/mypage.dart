@@ -11,7 +11,7 @@ class MyPageView extends StatelessWidget {
         title: const Text('My Page'),
         centerTitle: true,
       ),
-      body: UserDetail(),
+      body: const UserDetail(),
     );
   }
 }

@@ -127,7 +127,7 @@ class _RegisterViewState extends State<RegisterView> {
                           }
           
                           var url = Uri.parse(
-                              'http://localhost:8080/Flutter/dup_check_select_flutter.jsp?userid=${userIdController.text}');
+                              'http://localhost:8000/Flutter/dup_check_select_flutter.jsp?userid=${userIdController.text}');
                           var response = await http.get(url);
                           var dataConvertedJSON =
                               json.decode(utf8.decode(response.bodyBytes));
@@ -171,13 +171,13 @@ class _RegisterViewState extends State<RegisterView> {
 
   insertAction() async {
     var url = Uri.parse(
-        'http://localhost:8080/Flutter/login_insert_flutter.jsp?userid=${userIdController.text}&password=${passwordController.text}&phone=${phoneController.text}');
+        'http://localhost:8000/Flutter/login_insert_flutter.jsp?userid=${userIdController.text}&password=${passwordController.text}&phone=${phoneController.text}');
     await http.get(url);
   }
 
   getJSONData() async {
     var url = Uri.parse(
-        'http://localhost:8080/Flutter/dup_check_select_flutter.jsp?userid=${userIdController.text}'); //uri는 정보를 주고 가져오는 것
+        'http://localhost:8000/Flutter/dup_check_select_flutter.jsp?userid=${userIdController.text}'); //uri는 정보를 주고 가져오는 것
     var response = await http.get(url);
     // data.clear();
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));

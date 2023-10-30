@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/ViewModel/Main/author_vm.dart';
+import 'package:photographer_ai/ViewModel/filter/filter_vm.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -59,6 +60,7 @@ class MainView extends StatelessWidget {
                         return GestureDetector(
                           onTap: () {
                             Get.snackbar('Author Filter', '${authorcontroller.data[index]['pnickname']}작가로 적용됩니다.', backgroundColor: Colors.amber[50], snackPosition: SnackPosition.BOTTOM);
+                            authorcontroller.pseq.value = authorcontroller.data[index]['seq'];
                             Get.offAll(() => const Home(), arguments: 2);
                           },
                           child: Card(

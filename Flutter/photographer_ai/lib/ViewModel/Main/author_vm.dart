@@ -7,6 +7,7 @@ class AuthorController extends GetxController{
 
   RxList<Map<String, dynamic>> data = <Map<String, dynamic>>[].obs;
   RxBool pload = false.obs;
+  RxInt pseq = 99.obs;
 
   // 작가의 데이터를 받아온다
   Future<List<Map<String, dynamic>>> fetchAuthors() async {

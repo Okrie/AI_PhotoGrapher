@@ -4,11 +4,11 @@
 Flutter, Python을 사용하여 모바일 어플리케이션 제작    
 사용자가 올린 이미지를 사용하여 AI Filter 이미지 생성하여 필터 구매시 다운로드 기능을 제공한다.  
      
-<a href="https://drive.google.com/file/d/1gAJQ-JmT6rB2BUJxUjo75Ac0bKrQC9xO/view?usp=sharing">![cover](https://github.com/Okrie/swift_Todolist/assets/24921229/313b9810-ec79-47f7-94a2-3701025d5cce)</a>
+<a href="https://drive.google.com/file/d/1gAJQ-JmT6rB2BUJxUjo75Ac0bKrQC9xO/view?usp=sharing">![cover](aiphotographer.png)</a>
 
 ##### 시연 영상
 
-<a href="https://drive.google.com/file/d/1uizayUb2Cioa9eimNOFGpAt-EUSic6nc/view?usp=sharing"><img src="https://github.com/Okrie/AI_PhotoGrapher/assets/24921229/4304ee67-e107-494e-8aa7-6268e2bee3d4" width="150" height="300"></a>
+<a href="https://drive.google.com/file/d/1uizayUb2Cioa9eimNOFGpAt-EUSic6nc/view?usp=sharing"><img src="aiphotographer_preview.png" width="150" height="300"></a>
 
 
 ---

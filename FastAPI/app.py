@@ -63,10 +63,11 @@ def purchase_filter(userid: str, pseq: int, db: Session = Depends(database.get_d
     existing_author = db.query(PhotographerDB).filter(PhotographerDB.seq == pseq).first()
     if not existing_author:
         return {'result' : 'Not Author'}, 403
-    existing_purchase = db.query(PurchaseDB).filter(PhotographerDB.seq == pseq, UserDB.id == userid).first()
+    existing_purchase = db.query(PurchaseDB).filter(PurchaseDB.seq == pseq, PurchaseDB.userid == userid).first()
     if existing_purchase:
         return {'result' : 'Fail'}, 200
-    pur = Purchase(seq=existing_author.seq, userid=userid, paid=existing_author.price, expired=existing_author.count)
+    print(userid, existing_author.seq, existing_author.price, existing_author.count)
+    pur = Purchase(userid=userid, seq=existing_author.seq, paid=existing_author.price, expired=existing_author.count)
     new_purchase = PurchaseDB(**pur.model_dump())  # SQLAlchemy 모델 생성
     db.add(new_purchase)
     db.commit()

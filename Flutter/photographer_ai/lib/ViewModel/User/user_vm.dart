@@ -1,6 +1,5 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -9,7 +8,6 @@ class UserController extends GetxController{
 
   RxString userid = ''.obs;
   RxBool isLogin = false.obs;
-
 
   // 유저 회원가입
   Future<bool> userRegister(id, password) async {
@@ -25,7 +23,6 @@ class UserController extends GetxController{
     if (response.statusCode == 201){
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
       String result = dataConvertedJSON[0]['result'];
-      print("result = $result");
       if (result == 'Success') {
         return true;
       } else{
@@ -36,6 +33,27 @@ class UserController extends GetxController{
       }
     }
     return false;
+  }
+
+  // 유저 회원가입 to Hive
+  Future<bool> userRegisterHive(id, password) async {
+    await Hive.openBox("user");
+    var result = false;
+
+    if (Hive.box("user").get(id) == null){
+      try{
+        Hive.box("user").put(id, password);
+      } catch (e){
+        result = true;
+      }
+    } else{
+      result = false;
+      Get.snackbar(
+        '회원가입에 실패하셨습니다.',
+        '동일한 아이디가 존재 합니다.',
+      );
+    }
+    return result;
   }
 
   // 유저 로그인
@@ -52,7 +70,6 @@ class UserController extends GetxController{
     if (response.statusCode == 201){
       var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
       String result = dataConvertedJSON[0]['result'];
-      print("result = $result");
       if (result == 'Success') {
         return true;
       } else{
@@ -65,4 +82,17 @@ class UserController extends GetxController{
     return false;
   }
 
+  // 유저 로그인 to Hive
+  Future<bool> userLoginHive(id, password) async {
+    await Hive.openBox("user");
+    print("result = ${Hive.box("user").get(id)}");
+
+    if(Hive.box("user").get(id) != null){
+      var chk = Hive.box("user").get(id);
+      if(password == chk){
+        return true;
+      }
+    }
+    return false;
+  }
 }

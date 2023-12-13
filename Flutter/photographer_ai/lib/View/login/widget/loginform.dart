@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/View/login/register.dart';
 import 'package:photographer_ai/ViewModel/User/user_vm.dart';
-import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -21,18 +19,18 @@ class _LoginFormState extends State<LoginForm> {
 
   late TextEditingController useridController;
   late TextEditingController passwordController;
+  late var box;
 
   @override
   void initState() {
     super.initState();
     useridController = TextEditingController();
     passwordController = TextEditingController();
-    _initSharedpreferences();
+    box = Hive.openBox("user");
   }
 
   @override
   void dispose() {
-    _disposeSharedpreferences();
     super.dispose();
   }
 
@@ -95,12 +93,10 @@ class _LoginFormState extends State<LoginForm> {
                 ElevatedButton(
                   // 로그인
                   onPressed: () async {
-                  var result = await usercontroller.userLogin(useridController.text, passwordController.text);
+                  var result = await usercontroller.userLoginHive(useridController.text, passwordController.text);
                     if (result) {
                       usercontroller.isLogin.value = true;
                       usercontroller.userid.value = useridController.text;
-                      _disposeSharedpreferences();
-                      _saveSharedpreferences();
                       Get.snackbar('Login', '${usercontroller.userid.value}님, 어서오세요');
                       Get.offAll(const Home(), arguments: 0);
                     } else {
@@ -163,25 +159,5 @@ class _LoginFormState extends State<LoginForm> {
         ),
       ),
     );
-  }
-
-  // ignore: unused_element
-  Future<void> _initSharedpreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    useridController.text = prefs.getString('userid') ?? "";
-
-    //앱을 종료하고 다시 실행하면 SharedPreferences에 남아 있으므로 앱을 종료시 정리
-    print(useridController);
-  }
-
-  _saveSharedpreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString('userid', useridController.text);
-    setState(() {});
-  }
-
-  _disposeSharedpreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear();
   }
 }

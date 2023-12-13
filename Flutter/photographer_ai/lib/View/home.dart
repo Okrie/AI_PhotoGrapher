@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:photographer_ai/ViewModel/User/user_vm.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:photographer_ai/View/camera.dart';
 import 'package:photographer_ai/View/filter.dart';
 import 'package:photographer_ai/View/login/login.dart';
@@ -34,7 +33,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
       userController = Get.put(UserController());
     }
     login = userController.isLogin.value;
-    _initSharedpreferences();
   }
 
   @override
@@ -67,9 +65,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
         indicatorSize: TabBarIndicatorSize.tab,
         labelColor: Colors.blue,
         
-        tabs: login
-        ? const [
-          Tab(
+        tabs: [
+          const Tab(
             icon: Icon(
               Icons.home,
               color: Colors.blue,
@@ -81,56 +78,29 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
               ),
             ),
           ),
-          Tab(
+          const Tab(
             icon: Icon(
               Icons.camera_alt,
               color: Color.fromARGB(255, 62, 53, 194),
             ),
             child: Text('Camera'),
           ),
-          Tab(
+          const Tab(
             icon: Icon(
               Icons.camera,
               color: Color.fromARGB(255, 62, 53, 194),
             ),
             child: Text('AI Filter'),
           ),
-          Tab(
+          login 
+          ? const Tab(
             icon: Icon(
               Icons.manage_accounts,
               color: Color.fromARGB(255, 191, 207, 102),
             ),
             child: Text('Mypage'),
-          ),
-        ]
-        : const [
-          Tab(
-            icon: Icon(
-              Icons.home,
-              color: Colors.blue,
-            ),
-            child: Text(
-              'Home',
-              style: TextStyle(
-                fontWeight: FontWeight.bold
-              ),
-            ),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.camera_alt,
-              color: Color.fromARGB(255, 62, 53, 194),
-            ),
-            child: Text('Camera'),
-          ),
-          Tab(
-            icon: Icon(
-              Icons.camera,
-              color: Color.fromARGB(255, 62, 53, 194),
-            ),
-            child: Text('AI Filter'),
-          ),
-          Tab(
+          )
+          : const Tab(
             icon: Icon(
               Icons.account_circle,
               color: Color.fromARGB(255, 191, 207, 102),
@@ -140,20 +110,5 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin{
         ],
       ),
     );
-  }
-
-  Future<void> _initSharedpreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    // userid = prefs.getString('userid') ?? "";
-    // password = prefs.getString('password') ?? "";
-    // login = userid.trim().isEmpty;
-    setState(() {
-      
-    });
-  }
-  
-  Future<void> _disposeSharedpreferences() async{
-    final prefs = await SharedPreferences.getInstance();
-    prefs.clear(); 
   }
 }

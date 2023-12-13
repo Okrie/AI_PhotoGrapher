@@ -345,3 +345,10 @@ Python/Data/RDL/852b62d2b54934122ef77d914cea5c2d.jpg
 Python/Data/RDL/night-scene.jpg
 Python/Data/RDL/night_scene_filtered_색온도감소_85.png
 Python/Data/RDL/old-town.jpg
+Python/RDL_test.ipynb
+Python/pred_test.ipynb
+Python/Module/PredPicture/Pred/predPicture.py
+Python/Module/cnnRDL/Rdl/cnnRdl.py
+FastAPI/pred/PredPicture/Pred/predPicture.py
+FastAPI/pred/PredPicture/__init__.py
+FastAPI/pred/pred_image/night-scene.jpg.jpg

@@ -33,12 +33,7 @@ class MainView extends StatelessWidget {
                     width: MediaQuery.of(context).size.width*0.6,
                     fit: BoxFit.fitWidth,
                   )
-                  : Center(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height*0.3,
-                      child: Image.asset('images/Loading_Ani.gif')
-                    ),
-                  )
+                  : const CircularProgressIndicator()
                 ) 
               ),
             ),
@@ -52,7 +47,7 @@ class MainView extends StatelessWidget {
                 future: authorcontroller.fetchAuthors(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator(backgroundColor: Colors.amber,); // 로딩 중일 때 로딩 인디케이터 표시
+                    return const CircularProgressIndicator(); // 로딩 중일 때 로딩 인디케이터 표시
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}'); // 오류 발생 시 오류 메시지 표시
                   } else {
@@ -103,5 +98,102 @@ class MainView extends StatelessWidget {
     );
   }
 }
+
+// class MainView extends StatefulWidget {
+//   const MainView({super.key});
+
+//   @override
+//   State<MainView> createState() => _MainViewState();
+// }
+
+// class _MainViewState extends State<MainView> {
+
+//   late List<String> recommendedList;
+//   late List<String> recommendedAuthor;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     recommendedList = [];
+//     recommendedAuthor = [];
+//     addFun();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Today PhotoGrapher'),
+//         centerTitle: true,
+//       ),
+//       body: SingleChildScrollView(
+//         scrollDirection: Axis.vertical,
+//         child: Column(
+//           children: [
+//             Padding(
+//               padding: const EdgeInsets.only(top: 15),
+//               child: Container(
+//                 height: 200,
+//                 width: MediaQuery.of(context).size.width,
+//                 color: Colors.black,
+//                 child: Image.asset(
+//                   'images/banner.png',
+//                   width: MediaQuery.of(context).size.width*0.6,
+//                   fit: BoxFit.fitWidth,
+//                 ),
+//               ),
+//             ),
+//             const Padding(
+//               padding: EdgeInsets.only(top: 20),
+//               child: Text('PhotoGraphers'),
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.only(top: 5),
+//               child: SizedBox(
+//                 height: MediaQuery.of(context).size.height*0.5,
+//                 child: ListView.builder(
+//                   itemCount: recommendedList.length,
+//                   itemBuilder: (BuildContext context, int index) {
+//                     return Card(
+//                       child: Row(
+//                         children: [
+//                           Image.asset(
+//                             recommendedList[index],
+//                             width: 250,
+//                             height: 100,
+//                             fit: BoxFit.fitWidth,
+//                           ),
+//                           const Padding(
+//                             padding: EdgeInsets.only(left: 30)
+//                           ),
+//                           SizedBox(
+//                             height: 100,
+//                             width: 100,
+//                             child: Center(
+//                               child: Text('${recommendedAuthor[index].toString()} 작가'),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     );
+//                   },
+//                 ),
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+
+//   addFun(){
+//     recommendedList.add('images/author1.png');
+//     recommendedAuthor.add('Lucia');
+//     recommendedList.add('images/author2.png');
+//     recommendedAuthor.add('Rain');
+//     recommendedList.add('images/author3.png');
+//     recommendedAuthor.add('Edward');
+//   }
+// }
 
 

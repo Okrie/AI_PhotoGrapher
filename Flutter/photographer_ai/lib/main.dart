@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:photographer_ai/View/home.dart';
 import 'package:photographer_ai/ViewModel/Camera/camera_vm.dart';
 
 Future<void> main() async{
-  // Init Hive
-  await Hive.initFlutter();
-  await Hive.openBox('testbox');
-
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();
+
   final cameraController = Get.put(CameraViewController());
+
   await initialization(null, cameraController);
 
   runApp(const MyApp());

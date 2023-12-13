@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'dart:convert';
+import 'dart:convert';
 import 'package:flutter/services.dart';
-// import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as http;
 import 'package:photographer_ai/ViewModel/User/user_vm.dart';
 
 class RegisterView extends StatefulWidget {
@@ -141,7 +141,9 @@ class _RegisterViewState extends State<RegisterView> {
                       //     snackPosition: SnackPosition.BOTTOM,
                       //   );
                       } else {
-                        var result = await userController.userRegisterHive(userIdController.text, passwordController.text);
+                        // 이전 화면으로 돌아가기
+                        // Get.back();
+                        var result = await userController.userRegister(userIdController.text, passwordController.text);
                         if (result){
                           _showDialog();
                           Get.back();

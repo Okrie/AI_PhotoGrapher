@@ -152,12 +152,33 @@ class FilterController extends GetxController{
         return result;
       }
     }
+    return 'Fail';
+  }
 
+  // 필터 사용
+  Future<String> useFilterHive(userid) async {
+    var url = Uri.parse('http://flask.okrie.kro.kr:8000/usefilter?userid=${userid}&pseq=${seq.value}');
+    // var headers = {'accept': 'application/json'};
+    // var body = jsonEncode({'userid': userid, 'pseq': seq.value});
+    var response = await http.get(
+      url,
+      // headers: headers,
+      // body: body
+    );
+
+    if (response.statusCode == 201){
+      var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
+      String result = dataConvertedJSON[0]['result'];
+      print("result = $result");
+      if (result == 'Success') {
+        return result;
+      }
+    }
     return 'Fail';
   }
 
   Future<void> downloadImage(bytes) async {
-    final result = await ImageGallerySaver.saveImage(bytes);
+    final _ = await ImageGallerySaver.saveImage(bytes);
     Get.snackbar('Success', '사진을 다운로드 하였습니다.');
   }
 }

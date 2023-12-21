@@ -32,79 +32,105 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('회원가입'),
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Sign In'),
+        ),
+        body: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextField(
-                  inputFormatters: <TextInputFormatter>[
-                    //한글을 제외한 영어 대,소문자,숫자 입력 가능
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+              Form(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextField(
+                        inputFormatters: <TextInputFormatter>[
+                          //한글을 제외한 영어 대,소문자,숫자 입력 가능
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9]')),
+                        ],
+                        controller: userIdController,
+                        decoration: const InputDecoration(
+                          labelText: 'ID',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextField(
+                        inputFormatters: <TextInputFormatter>[
+                          //특수문자를 제외한 문자,숫자 입력 가능
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9가-힣]')),
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        onChanged: (value) {},
+                        controller: passwordController,
+                        obscureText: true,
+                        obscuringCharacter: '*',
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: TextField(
+                        inputFormatters: <TextInputFormatter>[
+                          //특수문자를 제외한 문자,숫자 입력 가능
+                          FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9가-힣]'),),
+                          LengthLimitingTextInputFormatter(10),
+                        ],
+                        controller: password2Controller,
+                        obscureText: true,
+                        obscuringCharacter: '*',
+                        decoration: const InputDecoration(labelText: 'Repeat Password'),
+                      ),
+                    ),
+                    // TextField(
+                    //   controller: phoneController,
+                    //   inputFormatters: [
+                    //     FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
+                    //     LengthLimitingTextInputFormatter(13),
+                    //   ],
+                    //   onChanged: (value) {
+                    //     final RegExp phoneRegex =
+                    //         RegExp(r'^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$');
+                    //     if (phoneRegex.hasMatch(value)) {
+                    //     } else {}
+                    //   },
+                    //   decoration: const InputDecoration(
+                    //     labelText: '전화번호를 입력해주세요',
+                    //   ),
+                    // ),
                   ],
-                  controller: userIdController,
-                  decoration: const InputDecoration(
-                    labelText: '아이디을 입력해주세요',
-                  ),
-                ),
+                )
               ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextField(
-                  inputFormatters: <TextInputFormatter>[
-                    //특수문자를 제외한 문자,숫자 입력 가능
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9가-힣]')),
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  onChanged: (value) {},
-                  controller: passwordController,
-                  obscureText: true,
-                  obscuringCharacter: '*',
-                  decoration: const InputDecoration(
-                    labelText: '비밀번호를 입력해주세요',
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextField(
-                  inputFormatters: <TextInputFormatter>[
-                    //특수문자를 제외한 문자,숫자 입력 가능
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9가-힣]'),),
-                    LengthLimitingTextInputFormatter(10),
-                  ],
-                  controller: password2Controller,
-                  obscureText: true,
-                  obscuringCharacter: '*',
-                  decoration: const InputDecoration(labelText: '다시 한번 비밀번호를 입력해주세요'),
-                ),
-              ),
-              // TextField(
-              //   controller: phoneController,
-              //   inputFormatters: [
-              //     FilteringTextInputFormatter.allow(RegExp(r'[0-9-]')),
-              //     LengthLimitingTextInputFormatter(13),
-              //   ],
-              //   onChanged: (value) {
-              //     final RegExp phoneRegex =
-              //         RegExp(r'^[0-9]{3}-[0-9]{3,4}-[0-9]{4}$');
-              //     if (phoneRegex.hasMatch(value)) {
-              //     } else {}
-              //   },
-              //   decoration: const InputDecoration(
-              //     labelText: '전화번호를 입력해주세요',
-              //   ),
-              // ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(150, 40),
+                      backgroundColor: Colors.grey[500],
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)
+                      )
+                    ),
+                    child:const Text('취소하기')
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.13,
+                    width: MediaQuery.of(context).size.width * 0.1,
+                  ),
                   ElevatedButton(
                     //텍스트 필드 미입력시 팝업
                     onPressed: () async {
@@ -153,32 +179,14 @@ class _RegisterViewState extends State<RegisterView> {
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(150, 40),
-                      backgroundColor: Colors.orange[100],
-                      foregroundColor: Colors.black87,
+                      backgroundColor: Colors.grey[700],
+                      foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)
                       )
                     ),
                     child: const Text('회원가입'),
                   ),
-                  const SizedBox(
-                    height: 70,
-                    width: 50,
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size(150, 40),
-                      backgroundColor: Colors.orange[100],
-                      foregroundColor: Colors.black87,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10)
-                      )
-                    ),
-                    child:const Text('취소하기')
-                  )
                 ],
               ),
             ],

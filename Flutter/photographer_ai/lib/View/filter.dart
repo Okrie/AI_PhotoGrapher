@@ -99,7 +99,7 @@ class PhotoGrapherFilter extends StatelessWidget{
                                             onPressed: () {
                                               if (userController.isLogin.value){
                                                 
-                                                fcontroller.useFilter(userController.userid.value);
+                                                fcontroller.useFilterHive(userController.userid.value);
                                                 fcontroller.downloadImage(bytes);
                                               } else{
                                                 Get.snackbar('Error', '로그인이 해주세요.', duration: const Duration(seconds: 1));

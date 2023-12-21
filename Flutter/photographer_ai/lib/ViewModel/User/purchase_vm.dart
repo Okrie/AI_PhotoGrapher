@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:hive/hive.dart';
 
 class PurchaseController{
   RxBool isLoad = false.obs;
@@ -30,6 +31,27 @@ class PurchaseController{
         return data;
       }
     }
+    return data;
+  }
+
+
+  // 필터 조회 및 구매
+  Future<List<Map<String, dynamic>>> fetchFilterHive(userid) async {
+    await Hive.openBox("filter");
+    print("result = ${Hive.box("filter").get(userid)}");
+
+    if(Hive.box("filter").get(userid) != null){
+      data = Hive.box("filter").get(userid);
+      if (isView.value){
+        List list = data;
+
+        isLoad.value = true;
+        return data;
+      } else {
+        throw Exception('구매한 필터가 없어요!');
+      }
+    }
+
     return data;
   }
 

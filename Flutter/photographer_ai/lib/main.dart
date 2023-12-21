@@ -37,9 +37,11 @@ class MyApp extends StatelessWidget {
       title: 'AI PhotoGrapher',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        fontFamily: 'CookieRun',
         useMaterial3: true,
       ),
       home: const Home(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

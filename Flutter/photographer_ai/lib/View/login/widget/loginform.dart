@@ -78,8 +78,8 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(150, 40),
-                    backgroundColor: Colors.orange[100],
-                    foregroundColor: Colors.black87,
+                    backgroundColor: Colors.grey[700],
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                     )
@@ -105,8 +105,8 @@ class _LoginFormState extends State<LoginForm> {
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(150, 40),
-                    backgroundColor: Colors.orange[100],
-                    foregroundColor: Colors.black87,
+                    backgroundColor: Colors.grey[700],
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)
                     )

@@ -24,7 +24,7 @@ class MainView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 15),
               child: Container(
-                height: 200,
+                height: MediaQuery.of(context).size.height * 0.28,
                 width: MediaQuery.of(context).size.width,
                 color: Colors.black,
                 child: Obx(() => authorcontroller.pload.value
@@ -34,9 +34,15 @@ class MainView extends StatelessWidget {
                     fit: BoxFit.fitWidth,
                   )
                   : Center(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height*0.3,
-                      child: Image.asset('images/Loading_Ani.gif')
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height*0.08,
+                          ),
+                          Image.asset('images/Loading_Ani.gif')
+                        ],
+                      ),
                     ),
                   )
                 ) 
@@ -46,6 +52,9 @@ class MainView extends StatelessWidget {
               padding: EdgeInsets.only(top: 20),
               child: Text('PhotoGraphers'),
             ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
             Padding(
               padding: const EdgeInsets.only(top: 5),
               child: FutureBuilder(
@@ -54,7 +63,7 @@ class MainView extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const CircularProgressIndicator(backgroundColor: Colors.amber,); // 로딩 중일 때 로딩 인디케이터 표시
                   } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}'); // 오류 발생 시 오류 메시지 표시
+                    return const Text('Error: Server Closed');//${snapshot.error}'); // 오류 발생 시 오류 메시지 표시
                   } else {
                     return ListView.builder( // 데이터 로드 완료 시 리스트뷰로 표시
                       shrinkWrap: true,

@@ -20,8 +20,9 @@ class _CameraViewState extends State<CameraView>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.grey[300],
         // Provide an onPressed callback.
         onPressed: () async {
           // Take the Picture in a try / catch block. If anything goes wrong,
@@ -42,20 +43,21 @@ class _CameraViewState extends State<CameraView>{
           } catch (e) {
             // If an error occurs, log the error to the console.
             Text('권한이 없어 이용 할 수 없어요.');
-            print(e);
           }
         },
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50)
-        ),
-        child: const Icon(Icons.camera_alt),
+          borderRadius: BorderRadius.circular(50),
+          side: BorderSide(
+            color: Colors.cyan[600]!,
+            width: 5
+          )
+        ),        
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
       body: Center(
-        child:
-        (cameraController.controller.value.isInitialized)
-              ? CameraPreview(cameraController.controller)
-              : const Center(child:CircularProgressIndicator()),
+        child: cameraController.controller.value.isInitialized
+          ? CameraPreview(cameraController.controller)
+          : const Center(child:CircularProgressIndicator()),
       ),
     );
   }

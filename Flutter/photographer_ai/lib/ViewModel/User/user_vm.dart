@@ -41,11 +41,7 @@ class UserController extends GetxController{
     var result = false;
 
     if (Hive.box("user").get(id) == null){
-      try{
-        Hive.box("user").put(id, password);
-      } catch (e){
-        result = true;
-      }
+      Hive.box("user").put(id, password);
     } else{
       result = false;
       Get.snackbar(
